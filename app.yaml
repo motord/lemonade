@@ -1,0 +1,26 @@
+application: k2javascript
+version: lemonade
+runtime: python
+api_version: 1
+
+builtins:
+- datastore_admin: on
+- appstats : on
+- deferred : on
+
+includes:
+- mapreduce/include.yaml
+
+handlers:
+- url: /robots\.txt
+  static_files: robots.txt
+  upload: robots\.txt
+
+- url: /media
+  static_dir: media
+
+- url: /bots/.*
+  script: bots.py
+
+- url: .*
+  script: main.py

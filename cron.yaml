@@ -1,0 +1,12 @@
+cron:
+- description: harvest topic url
+  url: /bots/harvest
+  schedule: every 3 hours
+
+- description: extract image & torrent
+  url: /bots/squeeze
+  schedule: every 4 hours
+
+- description: download image & torrent
+  url: /bots/bottle
+  schedule: every 5 hours

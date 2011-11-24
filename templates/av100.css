@@ -1,0 +1,27 @@
+body {
+  padding-top: 60px;
+}
+.pin {
+  background-color: #FFFFFF;
+  box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
+  font-size: 11px;
+  padding: 10px 10px 0;
+  /*position: absolute;*/
+  width: 300px;
+  float: left;
+  margin-top: 15px;
+}
+
+#wrapper {
+    border: medium none;
+    margin: 0 auto;
+    min-width: 940px;
+    position: relative;
+    width: auto;
+}
+
+#container {
+    margin: 0px auto 0 60px;
+    min-height: 500px;
+    position: relative;
+}
