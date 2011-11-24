@@ -16,24 +16,6 @@ app=Bottle()
 def harvest():
     deferred.defer(aisex.harvest)
 
-class LemonSqueezePipeline(base_handler.PipelineBase):
-
-  def run(self):
-    output = yield mapreduce_pipeline.MapperPipeline(
-        "squeeze_lemon",
-        "aisex.squeeze_lemon_map",
-        "mapreduce.input_readers.DatastoreInputReader",
-        params={
-            "entity_kind": "models.Lemon", "batch_size": 4
-        },
-        shards=4)
-
-#@cron_only
-@app.get('/bots/squeeze')
-def squeeze():
-    pipeline = LemonSqueezePipeline()
-    pipeline.start()
-
 class JuiceBottlePipeline(base_handler.PipelineBase):
 
   def run(self):

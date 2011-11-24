@@ -1,21 +1,4 @@
 mapreduce:
-- name: Squeeze lemon
-  params:
-  - name: done_callback
-    value: /done
-  mapper:
-    handler: aisex.squeeze_lemon_map
-    input_reader: mapreduce.input_readers.DatastoreInputReader
-    params:
-    - name: entity_kind
-      default: models.Lemon
-    - name: batch_size
-      default: 4
-    - name: processing_rate
-      default: 10
-    - name: shard_count
-      default: 4
-
 - name: Bottle juice
   params:
   - name: done_callback

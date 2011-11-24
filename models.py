@@ -4,11 +4,9 @@
 from google.appengine.ext import db
 
 # Create your models here.
-class Lemon(db.Model):
-    created=db.DateTimeProperty(auto_now_add=True)
-
 class Squeezed(db.Model):
     created=db.DateTimeProperty(auto_now_add=True)
+    lemons=db.StringListProperty()
 
 class Juice(db.Model):
     image=db.LinkProperty()

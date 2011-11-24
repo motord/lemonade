@@ -18,7 +18,7 @@ from google.appengine.ext import webapp, db
 from google.appengine.ext.webapp import util
 from bottle import debug, Bottle, request, response, template
 from google.appengine.api import memcache
-from models import Lemon, Bottled, Squeezed, StaticContent
+from models import Bottled, Squeezed, StaticContent
 import logging
 import bottle
 
@@ -52,11 +52,11 @@ def scroll(page):
             json.put()
         memcache.set(path, json, 1800)
     response.content_type=json.content_type
-    return content.body
+    return json.body
 
 @app.get('/done')
 def regenerate():
-    logging.info('regerating site')
+    logging.info('regenerating site')
     contents=['index.html','2.json','3.json','4.json']
     memcache.delete_multi(contents)
     db.delete(StaticContent.get_by_key_name(contents))
