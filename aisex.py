@@ -10,11 +10,13 @@ from google.appengine.api import urlfetch
 from google.appengine.api import images
 import urlparse
 from google.appengine.ext import deferred
+import mechanize
+import re
 
 baseurl='http://bt.aisex.com/bt/'
 
 def harvest():
-    aisex=[baseurl+'thread.php?fid=4&search=&page=' + str(i) for i in range(10, 0, -1)]
+    aisex=[baseurl+'thread.php?fid=4&search=&page=' + str(i) for i in range(5, 0, -1)]
     lemons=[]
     for url in aisex:
         lemons.extend(scrapemark.scrape("""
@@ -55,6 +57,13 @@ def harvest():
     squeezed.put()
     memcache.set('Squeezed::lemons', squeezed)
 
+def download_torrent(url):
+    br=mechanize.Browser()
+    br.open(url)
+    br.select_form(nr=0)
+    response=br.submit()
+    return response.get_data()
+
 def bottle_juice_map(juice):
     logging.info('bottling '+juice.key().name())
     image_url=juice.image
@@ -62,14 +71,23 @@ def bottle_juice_map(juice):
     image_url_netloc_path=image_url_components.netloc + image_url_components.path
     torrent_url=juice.download
     torrent_url_components=urlparse.urlparse(torrent_url)
-    bottle=Bottled(key_name=juice.key().name(), image=image_url_netloc_path, download=torrent_url)
-    try:
-        result=urlfetch.fetch(image_url)
-        if result.status_code==200:
-            image_content=images.resize(result.content, width=300, output_encoding=images.JPEG)
-            content=StaticContent(key_name=image_url_netloc_path, body=image_content, content_type='image/jpeg')
-            yield op.db.Put(content)
-            yield op.db.Put(bottle)
-    except Exception, err:
+    torrent_url_query=torrent_url_components.query
+    match=re.search('ref=(.*)', torrent_url_query)
+    if match is None:
         pass
-    yield op.db.Delete(juice)
+    else:
+        torrent_file=str(match.groups(0)[0])+'.torrent'
+        bottle=Bottled(key_name=juice.key().name(), image=image_url_netloc_path, download=torrent_file)
+        try:
+            result=urlfetch.fetch(image_url)
+            if result.status_code==200:
+                image_content=images.resize(result.content, width=300, output_encoding=images.JPEG)
+                content=StaticContent(key_name=image_url_netloc_path, body=image_content, content_type='image/jpeg')
+                yield op.db.Put(content)
+                torrent=download_torrent(torrent_url)
+                content=StaticContent(key_name=torrent_file, body=torrent, content_type='application/x-bittorrent')
+                yield op.db.Put(content)
+                yield op.db.Put(bottle)
+        except Exception, err:
+            pass
+        yield op.db.Delete(juice)
