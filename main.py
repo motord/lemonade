@@ -18,7 +18,7 @@ from google.appengine.ext import webapp, db
 from google.appengine.ext.webapp import util
 from bottle import debug, Bottle, request, response, template
 from google.appengine.api import memcache
-from models import Bottled, Squeezed, StaticContent
+from models import Bottled, Squeezed, StaticContent, Juice
 import logging
 import bottle
 
@@ -26,6 +26,11 @@ bottle.TEMPLATE_PATH.insert(0, './templates/')
 
 debug(True)
 app=Bottle()
+
+@app.get('/test')
+def test():
+    juice=Juice(key_name='test', image='http://pics.dmm.co.jp/mono/movie/1dandy044/1dandy044pl.jpg', download='http://www.jandown.com/link.php?ref=CUWjjPJP0q')
+    juice.put()
 
 def page_filter(config):
     regexp = r'[234].json'
@@ -53,13 +58,6 @@ def scroll(page):
         memcache.set(path, json, 1800)
     response.content_type=json.content_type
     return json.body
-
-@app.get('/done')
-def regenerate():
-    logging.info('regenerating site')
-    contents=['index.html','2.json','3.json','4.json']
-    memcache.delete_multi(contents)
-    db.delete(StaticContent.get_by_key_name(contents))
 
 @app.get('/<path:path>')
 def get_content(path):
