@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+%import random
+%r=random.randint(1,25)
+%i=1
+%for bottle in bottles:
+    <div class="pin">
+      <a class="PinImage ImgLink" href="{{ bottle.download }}">
+        <img style="width: 300px;" alt="It's going to be my good-bye. Love. " src="{{ bottle.image }}">
+      </a>
+    </div>
+    %if i==r:
+    <div class="pin">
+        %include adsense.html
+    </div>
+    %end
+    %i+=1
+%end
+</body>
+</html>

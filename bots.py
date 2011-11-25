@@ -21,7 +21,7 @@ def harvest():
 @app.get('/bots/done')
 def regenerate():
     logging.info('regenerating site')
-    contents=['index.html','2.json','3.json','4.json']
+    contents=['index.html','2.html','3.html','4.html']
     memcache.delete_multi(contents)
     try:
         db.delete(StaticContent.get_by_key_name(contents))

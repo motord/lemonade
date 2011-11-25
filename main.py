@@ -34,13 +34,13 @@ def test():
     juice.put()
 
 def page_filter(config):
-    regexp = r'[234].json'
+    regexp = r'[234].html'
 
     def to_python(match):
         return int(match[0])
 
     def to_url(number):
-        return str(number)+'.json'
+        return str(number)+'.html'
 
     return regexp, to_python, to_url
 
@@ -48,17 +48,17 @@ app.router.add_filter('page', page_filter)
 
 @app.get('/<page:page>')
 def scroll(page):
-    path=str(page)+'.json'
-    json=memcache.get(path)
-    if json is None:
-        json=StaticContent.get_by_key_name(path)
-        if json is None:
-            bottles=Bottle.gql("ORDER BY created DESC LIMIT 25 OFFSET :1", page*25-24)
-            json=StaticContent(key_name=path, body=str(template('page.json', bottles=bottles)), content_type='application/json')
-            json.put()
-        memcache.set(path, json, 43200)
+    path=str(page)+'.html'
+    content=memcache.get(path)
+    if content is None:
+        content=StaticContent.get_by_key_name(path)
+        if content is None:
+            bottles=Bottled.gql("ORDER BY created DESC LIMIT 25 OFFSET " + str(page*25-24))
+            content=StaticContent(key_name=path, body=str(template('page.html', bottles=bottles)), content_type='text/html')
+            content.put()
+        memcache.set(path, content, 43200)
 
-    return _output(json)
+    return _output(content)
 
 @app.get('/<path:path>')
 def get_content(path):
