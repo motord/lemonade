@@ -1,6 +1,11 @@
+html {
+    background: url("media/images/paper.jpg") repeat scroll 0 0 #F7F5F5;
+}
+
 body {
   padding-top: 60px;
 }
+
 .pin {
   background-color: #FFFFFF;
   box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
@@ -23,5 +28,13 @@ body {
 #container {
     margin: 0px auto 0 60px;
     min-height: 500px;
+    position: relative;
+}
+
+.topbar div > ul, .nav {
+    display: block;
+    float: right;
+    left: 0;
+    margin: 10px 10px 0 0;
     position: relative;
 }

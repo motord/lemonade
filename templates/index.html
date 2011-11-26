@@ -23,8 +23,6 @@
     <link rel="apple-touch-icon" sizes="72x72" href="media/images/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="media/images/apple-touch-icon-114x114.png">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-    <script type="text/javascript" src="media/js/underscore-min.js"></script>
-    <script type="text/javascript" src="media/js/backbone-min.js"></script>
     <script type="text/javascript" src="media/js/jquery.masonry.min.js"></script>
     <script type="text/javascript" src="media/js/jquery.infinitescroll.min.js"></script>
     <script type="text/javascript">
@@ -59,7 +57,7 @@
         %for bottle in bottles:
             <div class="pin">
               <a class="PinImage ImgLink" href="{{ bottle.download }}">
-                <img style="width: 300px;" alt="It's going to be my good-bye. Love. " src="{{ bottle.image }}">
+                <img style="width: 300px;" src="{{ bottle.image }}">
               </a>
             </div>
             %if i==r:
@@ -79,18 +77,6 @@
       </footer>
 
     </div> <!-- /container -->
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-7265938-19']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-
-    </script>
+    %include analytics.html
   </body>
 </html>

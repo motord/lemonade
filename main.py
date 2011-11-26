@@ -64,7 +64,6 @@ def scroll(page):
 def get_content(path):
     if path=='':
         path='index.html'
-    memcache.delete(path)
     content=memcache.get(path)
     if content is None:
         content=StaticContent.get_by_key_name(path)
