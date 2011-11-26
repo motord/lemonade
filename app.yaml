@@ -1,4 +1,4 @@
-application: k2samadhi
+application: k2lemonade
 version: lemonade
 runtime: python
 api_version: 1
@@ -21,6 +21,7 @@ handlers:
 
 - url: /bots/.*
   script: bots.py
+  login: admin
 
 - url: .*
   script: main.py
