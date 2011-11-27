@@ -25,7 +25,7 @@ handlers:
   static_dir: mapreduce/lib/pipeline/ui/images
 
 - url: /mapreduce(/.*)?
-  script: google.appengine.ext.mapreduce.application 
+  script: google.appengine.ext.mapreduce.main.APP
   login: admin
 
 - url: /bots/.*
