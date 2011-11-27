@@ -18,6 +18,7 @@ baseurl='http://bt.aisex.com/bt/'
 def harvest():
     aisex=[baseurl+'thread.php?fid=5&search=&page=' + str(i) for i in range(5, 0, -1)]
     lemons=[]
+    fresh=[]
     for url in aisex:
         lemons.extend(scrapemark.scrape("""
         {*
@@ -34,7 +35,7 @@ def harvest():
             fresh=[baseurl+lemon['url'] for lemon in lemons]
     else:
         fresh=[baseurl+lemon['url'] for lemon in lemons if lemon['url'] not in squeezed.lemons]
-    basket=[]
+    bucket=[]
     for lemon in fresh:
         logging.info('squeezing '+lemon)
         juices = scrapemark.scrape("""
@@ -49,11 +50,11 @@ def harvest():
         for juice in juices:
             juice=Juice(key_name=lemon, image=juice['image'], download=juice['download'])
             juice.put()
-        basket.append(lemon)
+        bucket.append(lemon)
     if squeezed is None:
-        squeezed=Squeezed(key_name='squeezed', lemons=basket)
+        squeezed=Squeezed(key_name='squeezed', lemons=bucket)
     else:
-        squeezed.lemons.extend(basket)
+        squeezed.lemons.extend(bucket)
     squeezed.put()
     memcache.set('Squeezed::lemons', squeezed)
 
