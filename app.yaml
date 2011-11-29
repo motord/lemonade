@@ -1,17 +1,15 @@
-application: k2lemonade
+application: k2samadhi
 version: lemonade
-runtime: python27
+runtime: python
 api_version: 1
-threadsafe: true
-
-libraries:
-- name: PIL
-  version: latest
 
 builtins:
 - datastore_admin: on
 - appstats : on
 - deferred : on
+
+includes:
+- mapreduce/include.yaml
 
 handlers:
 - url: /robots\.txt
@@ -21,16 +19,9 @@ handlers:
 - url: /media
   static_dir: media
 
-- url: /mapreduce/pipeline/images
-  static_dir: mapreduce/lib/pipeline/ui/images
-
-- url: /mapreduce(/.*)?
-  script: google.appengine.ext.mapreduce.main.APP
-  login: admin
-
 - url: /bots/.*
-  script: bots.app
+  script: bots.py
   login: admin
 
 - url: .*
-  script: main.app
+  script: main.py

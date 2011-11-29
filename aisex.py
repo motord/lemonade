@@ -16,7 +16,7 @@ import re
 baseurl='http://bt.aisex.com/bt/'
 
 def harvest():
-    aisex=[baseurl+'thread.php?fid=5&search=&page=' + str(i) for i in range(5, 0, -1)]
+    aisex=[baseurl+'thread.php?fid=4&search=&page=' + str(i) for i in range(5, 0, -1)]
     lemons=[]
     fresh=[]
     for url in aisex:
