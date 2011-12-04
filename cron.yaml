@@ -5,4 +5,4 @@ cron:
 
 - description: download image & torrent
   url: /bots/bottle
-  schedule: every 12 hours
+  schedule: every 4 hours
