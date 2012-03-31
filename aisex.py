@@ -40,12 +40,11 @@ def harvest():
     for lemon in fresh:
         logging.info('squeezing '+lemon)
         juices = scrapemark.scrape("""
-            <span class='tpc_title'>
+            <span class='tpc_title'></span>
             {*
             <img src='{{ [juices].image }}' border=0>
             <a href='{{ [juices].download }}' target=_blank></a>
             *}
-            </span>
             """, url=lemon)['juices']
         logging.info(juices)
         for juice in juices:
