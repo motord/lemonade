@@ -15,19 +15,20 @@ import re
 
 baseurl='http://bt.aisex.com/bt/'
 
-def harvest():
-    aisex=[baseurl+'thread.php?fid=4&search=&page=' + str(i) for i in range(10, 0, -1)]
-    lemons=[]
-    fresh=[]
+def lemons():
+    aisex=(baseurl+'thread.php?fid=4&search=&page=' + str(i) for i in range(10, 0, -1))
     for url in aisex:
-        lemons.extend(scrapemark.scrape("""
+        for lemon in scrapemark.scrape("""
         {*
         <td class=t_two align=left style="padding-left:8px">
          <a target=_blank href='{{ [lemons].url }}'>{{ [lemons].title }}</a>
         </td>
         *}
-        """, url=url)['lemons'])
-        logging.info(url)
+        """, url=url)['lemons']:
+            yield lemon
+            logging.info(url)
+
+def harvest():
     squeezed=memcache.get('Squeezed::lemons')
     if squeezed is None:
         squeezed=Squeezed.get_by_key_name('squeezed')
@@ -39,7 +40,7 @@ def harvest():
     for lemon in fresh:
         logging.info('squeezing '+lemon)
         juices = scrapemark.scrape("""
-            <span class='tpc_content'>
+            <span class='tpc_title'>
             {*
             <img src='{{ [juices].image }}' border=0>
             <a href='{{ [juices].download }}' target=_blank></a>
