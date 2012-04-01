@@ -10,6 +10,7 @@ from google.appengine.api import urlfetch
 from google.appengine.api import images
 import urlparse
 from google.appengine.ext import deferred
+from google.appengine.api.datastore_errors import BadValueError
 import mechanize
 import re
 
@@ -48,8 +49,11 @@ def harvest():
             """, url=lemon)['juices']
         logging.info(juices)
         for juice in juices:
-            juice=Juice(key_name=lemon, image=juice['image'], download=juice['download'])
-            juice.put()
+            try:
+                juice=Juice(key_name=lemon, image=juice['image'], download=juice['download'])
+                juice.put()
+            except BadValueError:
+                logging.info(juice)
         bucket.append(lemon)
     if squeezed is None:
         squeezed=Squeezed(key_name='squeezed', lemons=bucket)
