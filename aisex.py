@@ -35,6 +35,8 @@ def harvest():
         squeezed=Squeezed.get_by_key_name('squeezed')
         if squeezed is None:
             fresh=(baseurl+lemon['url'] for lemon in lemons())
+        else:
+            fresh=(baseurl+lemon['url'] for lemon in lemons() if lemon['url'] not in squeezed.lemons)
     else:
         fresh=(baseurl+lemon['url'] for lemon in lemons() if lemon['url'] not in squeezed.lemons)
     bucket=[]
